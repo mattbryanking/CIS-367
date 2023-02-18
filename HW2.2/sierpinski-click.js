@@ -60,7 +60,6 @@ function init()
     gl.enableVertexAttribArray( vPosition );
 
     canvas.addEventListener("mouseup", function(event) {
-        // console.log(event.clientX, event.clientY);
 
         var rect = gl.canvas.getBoundingClientRect();
         var newx = (event.clientX - rect.left) / canvas.width * 2 - 1;
