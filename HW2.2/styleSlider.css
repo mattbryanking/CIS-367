@@ -26,10 +26,18 @@ nav a{
     color: black;
 }
 
+.slider{
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: larger;
+}
+
 canvas{
     display: inline-block;
     margin: auto;
-    margin-top: 10%;
     padding: 0;
     background-color: black;
 }

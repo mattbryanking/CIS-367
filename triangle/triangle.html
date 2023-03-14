@@ -13,7 +13,7 @@
     <script id="fragment-shader" type="x-shader/x-fragment">
     precision mediump float;
     void main() {
-    gl_FragColor = vec4( 0.0, 188.0, 255.0, 1.0);
+    gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0);
     }
     </script>
      <!-- include our libraries for WebGL -->
@@ -26,8 +26,13 @@
 
 </head>
 <body>
-    <canvas id="gl-canvas" width="640" height="480">
-        Your browser doesn't support HTML5!
+    <div style = "text-align:center">
+        <canvas id="gl-canvas" width="640" height="480">
+            Your browser doesn't support HTML5!
         </canvas>
+    </div>
+    <nav >
+        <a href="../index.html" class="logo">BACK</a> 
+    </nav>
 </body>
 </html>

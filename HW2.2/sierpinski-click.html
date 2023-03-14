@@ -3,7 +3,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
 <title>2D Sierpinski Gasket</title>
-<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="styleSlider.css" />
 
 
 <script id="vertex-shader" type="x-shader/x-vertex">
@@ -22,7 +22,7 @@ precision mediump float;
 void
 main()
 {
-    gl_FragColor = vec4( 1.0, 0.0, 0.0, 1.0 );
+    gl_FragColor = vec4( 1.0, 1.0, 1.0, 1.0);
 }
 </script>
 
@@ -33,17 +33,21 @@ main()
 </head>
 
 <body>
-<div>
-recursive steps  0 <input id="slider" type="range"
+<div class="slider">
+Reeeeeeeeaaseecursive Steps<input id="slider" type="range"
  min= "0" max= "6" step = "1" value = "0" />
- 6
  Vertex:
  <input type="radio" name="vertex" value="0" checked> 0
  <input type="radio" name="vertex" value="1"> 1
  <input type="radio" name="vertex" value="2"> 2
 </div>
-<canvas id="gl-canvas" width="512" height="512">
-Oops ... your browser doesn't support the HTML5 canvas element
-</canvas>
+<div style = "text-align:center">
+    <canvas id="gl-canvas" width="640" height="480">
+        Your browser doesn't support HTML5!
+    </canvas>
+</div>
+<nav>
+    <a href="../index.html" class="logo">BACK</a> 
+</nav>
 </body>
 </html>
