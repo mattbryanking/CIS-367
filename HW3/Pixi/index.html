@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PixiJS - Matthew King</title>
+  </head>
+  <body style="overflow: hidden">
+    <script src="https://unpkg.com/pixi.js@7.x/dist/pixi.min.js"></script>
+
+    <script>
+      // even out white border bcz PIXI stages are strange
+      let app = new PIXI.Application({
+        width: window.innerWidth * 0.99,
+        height: window.innerHeight * 0.98,
+      });
+      document.body.appendChild(app.view);
+
+      let background = PIXI.Sprite.from("Assets/background.png");
+      app.stage.addChild(background);
+      background.scale.x = 1 * (window.innerWidth * 0.0006);
+      background.scale.y = 1 * (window.innerHeight * 0.001);
+      console.log(window.innerHeight);
+      console.log(window.innerWidth);
+
+      let ship = PIXI.Sprite.from("Assets/ship.png");
+      app.stage.addChild(ship);
+
+      let rock = PIXI.Sprite.from("Assets/rock.png");
+      app.stage.addChild(rock);
+
+      let reset_ship_x = 0;
+      let reset_ship_y = 0;
+
+      var state = {
+        pressedKeys: {
+          left: false,
+          right: false,
+          up: false,
+          down: false,
+        },
+      };
+
+      var keyMap = {
+        37: "left",
+        38: "up",
+        39: "right",
+        40: "down",
+      };
+
+      function keydown(event) {
+        var key = keyMap[event.keyCode];
+        state.pressedKeys[key] = true;
+      }
+
+      function keyup(event) {
+        var key = keyMap[event.keyCode];
+        state.pressedKeys[key] = false;
+      }
+
+      window.addEventListener("keydown", keydown, false);
+      window.addEventListener("keyup", keyup, false);
+
+      // hitboxes
+      const ship_rect = new PIXI.Graphics();
+      const rock_rect = new PIXI.Graphics();
+      ship_rect.beginFill();
+      rock_rect.beginFill();
+      ship_rect.alpha = 0;
+      rock_rect.alpha = 0;
+      ship_rect.drawRect(ship.position.x, ship.position.y, 120, 100);
+      rock_rect.drawRect(rock.position.x, rock.position.y, 100, 100);
+      app.stage.addChild(ship_rect);
+      app.stage.addChild(rock_rect);
+
+      function collision(ship, rock) {
+        var ship_bounds = ship_rect.getBounds();
+        var rock_bounds = rock_rect.getBounds();
+
+        // i'm sorry
+        return (
+          ship_bounds.x + ship_bounds.width > rock_bounds.x &&
+          ship_bounds.x < rock_bounds.x + rock_bounds.width &&
+          ship_bounds.y + ship_bounds.height > rock_bounds.y &&
+          ship_bounds.y < rock_bounds.y + rock_bounds.height
+        );
+      }
+
+      function init() {
+        ship.angle = 90;
+        ship.position.x += 500;
+        reset_ship_x = ship.position.x;
+        ship.position.y += 250;
+        reset_ship_y = ship.position.y;
+        rock.scale.x = 0.3;
+        rock.scale.y = 0.3;
+        rock.position.x += window.innerWidth;
+        rock.position.y = window.innerHeight / 2 - 120;
+      }
+
+      function reset() {
+        ship.position.x = reset_ship_x;
+        ship.position.y = reset_ship_y;
+      }
+
+      function gameLoop() {
+        requestAnimationFrame(gameLoop);
+        rock.position.x -= 10;
+
+        if (rock.position.x < -200) {
+          rock.position.x += window.innerWidth + 200;
+          rock.position.y = Math.floor(
+            Math.random() * (window.innerHeight - 300)
+          );
+        }
+
+        if (ship.position.x < 220) {
+          ship.position.x += 3;
+        }
+        if (ship.position.x > window.innerWidth + 10) {
+          ship.position.x -= 3;
+        }
+        if (ship.position.y < -55) {
+          ship.position.y += 3;
+        }
+        if (ship.position.y > window.innerHeight - 220) {
+          ship.position.y -= 3;
+        }
+
+        if (state.pressedKeys.left) {
+          ship.position.x -= 3;
+        }
+        if (state.pressedKeys.right) {
+          ship.position.x += 3;
+        }
+        if (state.pressedKeys.up) {
+          ship.position.y -= 3;
+        }
+        if (state.pressedKeys.down) {
+          ship.position.y += 3;
+        }
+
+        // why this must be offset, i will never know
+        ship_rect.position.x = ship.position.x - 170;
+        ship_rect.position.y = ship.position.y + 78;
+
+        rock_rect.position.x = rock.position.x + 15;
+        rock_rect.position.y = rock.position.y;
+
+        if (collision(rock_rect, ship_rect)) {
+          reset();
+        }
+      }
+
+      init();
+      gameLoop();
+    </script>
+  </body>
+</html>
